@@ -2,5 +2,5 @@
 <p>Showing <%= @jobs.count %> jobs.  <%= link_to "Add a new job?", new_job_path %></p>
 
 <% @jobs.each do |job| %>
-	<p><strong><%= link_to job.title, job %></strong></p>
+	<p><strong><%= link_to job.title, job %></strong>, <em><%= job.org %></em></p>
 <% end %>
