@@ -6,9 +6,8 @@
 	<li><b>Internship?:</b> <%= @job.internship %></li>
 	<li><b>Post Date:</b> <%= @job.postdate %></li>
 	<li><b>Fill By:</b> <%= @job.filldate %></li>
-	<li><b>Job Location</b> <%= @job.location %></li>
-	<li><b>Link to Posting:</b> <%= @job.link %></li>
-	<li><b>Description:</b> <%= @job.description %></li>
+	<li><b>Job Location:</b> <%= @job.location %></li>
+	<li><b>Link to Posting:</b> <%= link_to @job.link, @job.link %></li>
 </ul>
 
 <%= link_to 'Edit', edit_job_path(@job) %> |
