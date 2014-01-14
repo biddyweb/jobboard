@@ -1,0 +1,17 @@
+<p id="notice"><%= notice %></p>
+<h1><%= @job.title %></h1>
+<p><%= @job.description %></p>
+<ul>
+	<li><b>Org:</b> <%= @job.org %></li>
+	<li><b>Internship?:</b> <%= @job.internship %></li>
+	<li><b>Post Date:</b> <%= @job.postdate %></li>
+	<li><b>Fill By:</b> <%= @job.filldate %></li>
+	<li><b>Job Location</b> <%= @job.location %></li>
+	<li><b>Link to Posting:</b> <%= @job.link %></li>
+	<li><b>Description:</b> <%= @job.description %></li>
+</ul>
+
+<%= link_to 'Edit', edit_job_path(@job) %> |
+<%= link_to 'Back', jobs_path %>
+<br>
+<%= link_to 'New Job', new_job_path %>
