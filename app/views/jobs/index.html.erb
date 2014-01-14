@@ -1,11 +1,6 @@
 <h1>Job Board</h1>
 <p>Showing <%= @jobs.count %> jobs.  <%= link_to "Add a new job?", new_job_path %></p>
 
-<div id="job">
-	<% @jobs.each do |job| %>
-		<ul>
-			<li><strong><%= link_to job.title, job %></strong></li>
-			<li>(<%= link_to 'Edit', edit_job_path(job) %> | <%= link_to 'Destroy', job, method: :delete, data: { confirm: 'Are you sure?' } %>)</li>
-		</ul>
-	<% end %>
-</div>
+<% @jobs.each do |job| %>
+	<p><strong><%= link_to job.title, job %></strong></p>
+<% end %>
