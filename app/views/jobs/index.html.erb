@@ -4,3 +4,5 @@
 <% @jobs.each do |job| %>
 	<p><strong><%= link_to job.title, job %></strong>, <em><%= job.org %></em></p>
 <% end %>
+
+<p><%= link_to "Sign up!", signup_path %></p>
