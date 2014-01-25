@@ -11,6 +11,7 @@ group :development, :test do
   gem 'guard-spork', '1.5.0'
   gem 'childprocess', '0.3.6'
   gem 'rails_layout' #Bootstrap
+  gem 'mechanize'
 end
 
 group :test do
