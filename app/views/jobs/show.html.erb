@@ -1,6 +1,6 @@
 <p id="notice"><%= notice %></p>
 <h1><%= @job.title %></h1>
-<p><%= @job.description %></p>
+<p><%= @job.description.html_safe %></p>
 <ul>
 	<li><b>Org:</b> <%= @job.org %></li>
 	<li><b>Internship?:</b> <%= @job.internship %></li>
