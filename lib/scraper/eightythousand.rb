@@ -4,13 +4,14 @@ module Scraper
 
     ORGANIZATION = '80,000 Hours'
     LOCATION = 'Centre for Effective Altruism, Oxford'
+    SOURCE = "http://80000hours.org/recruitment"
 
     def initialize
     end
 
     def scrape agent
       jobs = []
-      agent.get("http://80000hours.org/recruitment") do |page|
+      agent.get(SOURCE) do |page|
 
         jobs_div = page / "div.col-md-9"
         buffer = []
@@ -43,9 +44,10 @@ module Scraper
     def extract_link_from_xml xml
       # A little tricky. Loop for <a> elements and extract href attribute
       # of first one containing text 'this form'.
-      xml.map { |y| y / 'a' }.flatten
+      link = xml.map { |y| y / 'a' }.flatten
         .select { |y| y.text =~ /this form/i }.first
         .try(:attributes).try(:[], "href").try(:value)
+      link || SOURCE
     end
 
   end
