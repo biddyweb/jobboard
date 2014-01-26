@@ -1,5 +1,7 @@
 module Scraper 
-
+	# use mechanize to scrape from http://80000hours.org/recruitment
+	# mechanize: http://mechanize.rubyforge.org/Mechanize.html
+	
   class Eightythousand < Processor
 
     ORGANIZATION = '80,000 Hours'
