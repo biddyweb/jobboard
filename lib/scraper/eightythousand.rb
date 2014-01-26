@@ -8,7 +8,7 @@ module Scraper
     def initialize
     end
 
-    def scrape(agent)
+    def scrape agent
       jobs = []
       agent.get("http://80000hours.org/recruitment") do |page|
 
