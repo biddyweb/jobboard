@@ -28,7 +28,7 @@ module Scraper
 
     def create_job_from_xml! xml
       unless Job.where('title like ?', "%#{xml[0].text}%")
-                .where(org: ORGANIZATION).exists?
+                .where(org: ORGANIZATION).exists? # TODO: Move to Engine
         Job.new \
           title: xml[0].text,
           org: ORGANIZATION,
