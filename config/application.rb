@@ -9,10 +9,10 @@ require "sprockets/railtie"
 Bundler.require(:default, Rails.env)
 
 module Eajobsboard
-	class Application < Rails::Application
+  class Application < Rails::Application
 
     config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif)
     config.autoload_paths += %W(#{config.root}/lib)
 
-	end
+  end
 end
