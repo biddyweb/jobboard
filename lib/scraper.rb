@@ -14,7 +14,7 @@ module Scraper
   def self.sources
     # http://stackoverflow.com/questions/833125/find-classes-available-in-a-module
     Scraper.constants.select { |c| Class === Scraper.const_get(c) }
-      .select { |klass| "Scraper::#{klass}".constantize < Scraper::Processor }
+      .select { |klass| "::Scraper::#{klass}".constantize < ::Scraper::Processor }
   end
 
 end
