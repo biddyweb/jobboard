@@ -2,6 +2,9 @@ module Scraper
 
   class Eightythousand < Processor
 
+    ORGANIZATION = '80,000 Hours'
+    LOCATION = 'Centre for Effective Altruism, Oxford'
+
     def initialize
     end
 
@@ -9,22 +12,40 @@ module Scraper
       jobs = []
       agent.get("http://80000hours.org/recruitment") do |page|
 
-        h2s = page / "div.col-md-9"
+        jobs_div = page / "div.col-md-9"
         buffer = []
-        for child in h2s[1].children
+        for child in jobs_div[1].children
           if child.name == "h2"
-            jobs << buffer 
-            flag = true
+            jobs << create_job_from_xml!(buffer)
+            buffer = []
           end
           buffer << child
-
         end
-        
-        return jobs
+        jobs.shift if jobs.length > 0 # Throw away first entry
       end
-      jobs
+      jobs.compact
     end
-      
+
+    def create_job_from_xml! xml
+      unless Job.where('title like ?', "%#{xml[0].text}%").exists?
+        Job.new \
+          title: xml[0].text,
+          org: ORGANIZATION,
+          internship: !!(xml[0].text =~ /intern/i),
+          postdate: nil, filldate: nil, # Doesn't appear to be shown...
+          location: LOCATION,
+          description: xml[1..-1].map(&:to_html).join,
+          link: extract_link_from_xml(xml)
+      end
+    end
+
+    def extract_link_from_xml xml
+      # A little tricky. Loop for <a> elements and extract href attribute
+      # of first one containing text 'this form'.
+      xml.map { |y| y / 'a' }.flatten
+        .select { |y| y.text =~ /this form/i }.first
+        .try(:attributes).try(:[], "href").try(:value)
+    end
 
   end
 

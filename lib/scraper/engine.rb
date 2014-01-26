@@ -11,9 +11,10 @@ module Scraper
     end
 
     def scrape
-      
-      @source.scrape @agent
-
+      jobs = @source.scrape @agent
+      return 0 unless jobs
+      jobs.each(&:save)
+      jobs.count
     end
 
   end
