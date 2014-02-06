@@ -1,8 +1,15 @@
 <h1>Job Board</h1>
-<p>Showing <%= @jobs.count %> jobs.</p>
+<p>Showing <strong><%= @jobs.count %></strong> jobs.</p>
 
 <% @jobs.each do |job| %>
 	<p><strong><%= link_to job.title, job %></strong>, <em><%= job.org %></em></p>
 <% end %>
 
-<p><%= link_to "Add a new job?", new_job_path %></p>
+<% if signed_in? %>
+	<p>Signed in as <%= @current_user.name %>.  <%= link_to "Sign out?", signout_path, method: "delete" %>  <%= link_to "Add a new job?", new_job_path %></p>
+<% else %>
+	<p>To add a job, either <%= link_to "sign in", signin_path %> or <%= link_to "sign up", signup_path %>.</p>
+<% end %>
+
+
+

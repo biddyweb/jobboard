@@ -17,6 +17,7 @@ group :test do
 gem 'selenium-webdriver', '2.35.1'
 gem 'capybara', '2.1.0'
 gem 'growl', '1.0.3'
+gem 'factory_girl_rails', '4.2.1'
 end
 
 gem 'bootstrap-sass', '2.3.2.0'
@@ -27,7 +28,6 @@ gem 'coffee-rails', '4.0.1'
 gem 'jquery-rails', '3.0.4'
 gem 'turbolinks', '1.1.1'
 gem 'jbuilder', '1.0.2'
-#gem 'delayed_job_active_record'
 
 gem 'mechanize'
 gem 'whenever', :require => false
