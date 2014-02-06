@@ -18,8 +18,4 @@ class UsersController < ApplicationController
   	def user_params
   	  params.require(:user).permit(:name, :email, :password, :password_confirmation)
   	end
-
-  	def signed_in_user
-  	  redirect_to signin_url, notice: "You must sign in first." unless signed_in?
-  	end
 end

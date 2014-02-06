@@ -11,14 +11,6 @@ FactoryGirl.define do
   end
 
   factory :job do
-    sequence(:id) { |n| "#{n}" }
-    sequence(:title) { |n| "Job #{n}" }
-    org "Example"
-    internship false
-    postdate ""
-    filldate ""
-    location "Example"
-    description ""
-    link "http://www.example.com"
+    title "Example Title"
   end
 end

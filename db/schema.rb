@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140206164258) do
+ActiveRecord::Schema.define(version: 20140206215546) do
 
   create_table "jobs", force: true do |t|
     t.string   "title"
@@ -24,7 +24,10 @@ ActiveRecord::Schema.define(version: 20140206164258) do
     t.string   "link"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "userid"
   end
+
+  add_index "jobs", ["title"], name: "index_jobs_on_title", unique: true
 
   create_table "users", force: true do |t|
     t.string   "name"

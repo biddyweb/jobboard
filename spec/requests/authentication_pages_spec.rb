@@ -31,23 +31,13 @@ describe "Authentication" do
       let(:job) { FactoryGirl.create(:job) }
       describe "in Jobs" do
       	describe "trying to create" do
-      	  before { visit new_job_path }
-      	  it { should have_content('You must sign in first.') }
-      	  it { should_not have_content('New job') }
-      	end
-      	describe "trying to edit" do
-      	  before { visit edit_job_path }
-      	  it { should have_content('You must sign in first.') }
-      	  it { should_not have_content('New job') }
-      	end
-      	describe "trying to update" do
-      	  before { patch job_path(:job) }
-      	  specify { expect(response).to redirect_to(signin_path) }
-      	end
-      	describe "trying to destroy" do
-      	  before { destroy job_path(:job) }
-      	  specify { expect(response).to redirect_to(signin_path) }
-      	end
+      	  before { post jobs_path }
+          specify { expect(response).to redirect_to(signin_path) }
+       	end
+        describe "trying to destroy" do
+          before { delete jobs_path(:job) }
+          specify { expect(response).to redirect_to(signin_path) }
+        end
       end
     end
   end
