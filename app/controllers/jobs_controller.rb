@@ -1,4 +1,6 @@
 class JobsController < ApplicationController
+	before_action :signed_in_user, only: [:new, :create, :update]
+	before_action :correct_user, only: [:edit, :update, :destroy]
 	before_action :set_job, only: [:show, :edit, :update, :destroy]
 
 	def index
@@ -16,7 +18,7 @@ class JobsController < ApplicationController
 	end
 
 	def create
-		@job = Job.new(job_params)
+		@job = current_user.jobs.build(job_params)
 		respond_to do |format|
 			if @job.save
 				format.html { redirect_to @job, notice: 'Job was successfully created.' }
@@ -56,4 +58,9 @@ class JobsController < ApplicationController
 		def job_params
 			params.require(:job).permit(:title, :org, :internship, :postdate, :filldate, :location, :link, :description)
 		end
+
+		def correct_user
+			@job = current_user.jobs.find_by(id: params[:id])
+      redirect_to root_url, notice: 'You can only edit your own jobs.' if @job.nil?
+    end
 end

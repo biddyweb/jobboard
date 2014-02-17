@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  before_action :signed_out_user, only: [:create]
+
   def new
   	@user = User.new
   end
@@ -18,4 +20,8 @@ class UsersController < ApplicationController
   	def user_params
   	  params.require(:user).permit(:name, :email, :password, :password_confirmation)
   	end
+
+    def signed_out_user
+      redirect_to(root_url) if signed_in?
+    end
 end
