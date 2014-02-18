@@ -39,7 +39,8 @@ module Scraper
           postdate: nil, filldate: nil, # Doesn't appear to be shown...
           location: LOCATION,
           description: xml[1..-1].map(&:to_html).join,
-          link: extract_link_from_xml(xml)
+          link: extract_link_from_xml(xml),
+          user_id: 1
       end
     end
 
