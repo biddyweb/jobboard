@@ -34,23 +34,24 @@ describe "Authentication" do
           let(:job) { FactoryGirl.create(:job, user: user) }
           before { get edit_job_path(job) }
           it { should_not have_content('Editing job') }
-          describe "after signing in" do
-            before do
-              visit signin_path
-              fill_in "Email", with: user.email
-              fill_in "Password", with: user.password
-              click_button "Sign in"
-            end
-            it "should render the desired protected page" do
-              expect(page).to have_content('Editing job')
-            end
-          end
-          describe "in the job controller" do
-            describe "submitting the create action" do
-              before { post job_path }
-              specify { expect(response).to redirect_to(signin_path) }
-            end
-          end
+        end
+        describe "submitting the create action" do
+          before { post job_path }
+          specify { expect(response).to redirect_to(signin_path) }
+        end
+      end
+      describe "after signing in" do
+        before do
+          visit signin_path
+          fill_in "Email", with: user.email
+          fill_in "Password", with: user.password
+          click_button "Sign in"
+        end
+        describe "when attempting to visit a protected page" do
+          let(:user) { FactoryGirl.create(:user) }
+          let(:job) { FactoryGirl.create(:job, user: user) }
+          before { get edit_job_path(job) }
+          it { should have_content('Editing job') }
         end
       end
 

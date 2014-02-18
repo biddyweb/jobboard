@@ -1,19 +1,51 @@
-<p id="notice"><%= notice %></p>
-<h1><%= @job.title %></h1>
-<p><%= @job.description.html_safe %></p>
-<ul>
-	<li><b>Org:</b> <%= @job.org %></li>
-	<li><b>Internship?:</b> <%= @job.internship %></li>
-	<li><b>Post Date:</b> <%= @job.postdate %></li>
-	<li><b>Fill By:</b> <%= @job.filldate %></li>
-	<li><b>Job Location:</b> <%= @job.location %></li>
-	<li><b>Link to Posting:</b> <%= link_to @job.link, @job.link %></li>
-</ul>
+<div id="alert">
+	<div class="notice">
+		<%= notice %>
+	</div>
+</div>
+<div id="top">
+	<h1>
+		<%= @job.title %>
+	</h1>
 
+	<% unless @job.location.blank? %>
+		<div class="org">
+			<%= @job.location %>
+		</div>
+	<% end %>
+
+	<% unless @job.org.blank? %>
+			<em><%= @job.org %></em>
+	<% end %>
+</div>
+
+<p>
+	<% unless @job.filldate.blank? %>
+		<strong>Apply before <%= @job.filldate %>.</strong>
+	<% end %>
+
+<p><%= @job.description.html_safe %></p>
+
+<p>
+	<% if @job.internship == true %>
+		<em>This is an internship.</em>
+	<% end %>
+	<% unless @job.postdate.blank? %>
+		<em>Posted on
+		<% unless @job.link.blank? %>
+			<%= link_to @job.postdate, @job.link %>.
+		<% else %>
+			<%= @job.postdate %>.
+		<% end %>
+		</em>
+	<% else %>
+		<% unless @job.link.blank? %>
+			<em>Posted at <%= link_to @job.link, @job.link %></em>.
+		<% end %>
+	<% end %>
+</p>
 
 <% if current_user == @job.user %>
-    <%= link_to 'Edit', edit_job_path(@job) %> | <%= link_to 'Destroy', @job, method: :delete, data: { confirm: 'Are you sure?' } %> |	
+    <%= link_to 'Edit Job', edit_job_path(@job) %> | <%= link_to 'Delete Job', @job, method: :delete, data: { confirm: 'Are you sure?' } %> |
 <% end %>
-
-<%= link_to 'Back', jobs_path %>
-<br>
+<%= link_to 'Back', root_url %>

@@ -1,17 +1,34 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Jobs Board</title>
-	<%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-	<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
-	<%= csrf_meta_tags %>
-</head>
-<body>
-	<% flash.each do |key, value| %>
-		<div class="alert alert-<%= key %>"><%= value %></div>
-  <% end %>
-	<div id="main">
-		<%= yield %>
-	</div>
-</body>
+	<head>
+		<title>Jobs Board</title>
+		<%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+		<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+		<%= csrf_meta_tags %>
+	</head>
+	<body>
+		<div id="wrapper">
+			<div id="header">
+				<div class="logo">
+					<a href="/">Job Board</a>
+				</div>
+				<div class="right">
+	      	<% if signed_in? %>
+						<%= @current_user.name %>.  <%= link_to "Sign out?", signout_path, method: "delete" %>
+					<% else %>
+						<%= link_to "Sign in?", signin_path %> | <%= link_to "Sign up!", signup_path %>
+					<% end %>
+				</div>
+			</div>
+
+			<% flash.each do |key, value| %>
+				<div id="alert">
+					<div class="<%= key %>">
+						<%= value %>
+					</div>
+				</div>
+	  	<% end %>
+			<%= yield %>
+		</div>
+	</body>
 </html>
