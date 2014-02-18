@@ -11,8 +11,9 @@
 </ul>
 
 
-<% if current_user?(job.user) %>
+<% if current_user == @job.user %>
     <%= link_to 'Edit', edit_job_path(@job) %> | <%= link_to 'Destroy', @job, method: :delete, data: { confirm: 'Are you sure?' } %> |	
 <% end %>
+
 <%= link_to 'Back', jobs_path %>
 <br>

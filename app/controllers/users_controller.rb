@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  skip_before_action :require_signin, only: [:new, :create]
+  skip_before_action :correct_user, only: [:new, :create]
   before_action :signed_out_user, only: [:create]
 
   def new

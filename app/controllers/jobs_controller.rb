@@ -1,6 +1,6 @@
 class JobsController < ApplicationController
-	before_action :signed_in_user, only: [:new, :create, :update]
-	before_action :correct_user, only: [:edit, :update, :destroy]
+	skip_before_action :require_signin, only: [:index, :show]
+	skip_before_action :correct_user, only: [:index, :show, :new, :create]
 	before_action :set_job, only: [:show, :edit, :update, :destroy]
 
 	def index
@@ -58,9 +58,4 @@ class JobsController < ApplicationController
 		def job_params
 			params.require(:job).permit(:title, :org, :internship, :postdate, :filldate, :location, :link, :description)
 		end
-
-		def correct_user
-			@job = current_user.jobs.find_by(id: params[:id])
-      redirect_to root_url, notice: 'You can only edit your own jobs.' if @job.nil?
-    end
 end
