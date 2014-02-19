@@ -35,20 +35,15 @@ describe "Authentication" do
           it { should_not have_content('New job') }
         end
         describe "submitting the create action" do
-          before { post job_path() }
+          before { post jobs_path }
           specify { expect(response).to redirect_to(signin_path) }
         end
       end
       describe "after signing in" do
         let(:user) { FactoryGirl.create(:user) }
-        before do
-          visit signin_path
-          fill_in "Email", with: user.email
-          fill_in "Password", with: user.password
-          click_button "Sign in"
-        end
+        before { sign_in user }
         describe "when attempting to visit the new job page" do
-          before { get new_job_path }
+          before { visit new_job_path }
           specify { expect(page).to have_content('New job') }
         end
       end
@@ -58,20 +53,21 @@ describe "Authentication" do
         let(:job) { FactoryGirl.create(:job, user: user) }
         let(:wrong_user) { FactoryGirl.create(:user, email: "wrong@example.com") }
         let(:wrong_job) { FactoryGirl.create(:job, user: wrong_user) }
-        before { sign_in user, no_capybara: true }
+        before { sign_in user }
         describe "users can edit their own jobs" do
-          before { get edit_job_path(job) }
-          specify { expect(page).to have_content('Editing job') }
+          before { visit edit_job_path(job) }
+          specify { save_and_open_page
+            expect(page).to have_content('Editing job') }
         end
         describe "users can only edit their own jobs" do
           before { get edit_job_path(wrong_job) }
-          specify { expect(page).to redirect_to(root_url) }
+          specify { expect(response).to redirect_to(signin_url) }
         end
         describe "users can only delete their own jobs" do
-          it "should not decrease job count" do
+          it "should not change job count" do
             expect do
               delete job_path(wrong_job)
-            end.to_not change(Job, :count).by(-1)
+            end.to_not change(Job, :count)
           end
         end
         describe "users can delete their own jobs" do
