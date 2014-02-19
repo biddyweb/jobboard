@@ -21,11 +21,13 @@
 					<a href="/">Job Board</a>
 				</div>
 				<div class="right">
-	      	<% if signed_in? %>
-						<%= @current_user.name %>.  <%= link_to "Sign out?", signout_path, method: "delete" %>
-					<% else %>
-						<%= link_to "Sign in?", signin_path %> | <%= link_to "Sign up!", signup_path %>
-					<% end %>
+					<div id="focus">
+	      				<% if signed_in? %>
+							<%= @current_user.name %>.  <%= link_to "Sign out?", signout_path, method: "delete" %>
+						<% else %>
+							<%= link_to "Sign in?", signin_path %> | <%= link_to "Sign up!", signup_path %>
+						<% end %>
+					</div>
 				</div>
 			</div>
 
@@ -35,7 +37,8 @@
 						<%= value %>
 					</div>
 				</div>
-	  	<% end %>
+	  		<% end %>
+			
 			<%= yield %>
 		</div>
 	</body>

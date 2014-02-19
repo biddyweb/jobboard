@@ -1,12 +1,17 @@
 <% @jobs.each do |job| %>
 	<div id='job'>
-		<%= link_to job.title, job %>, <em><%= job.org %></em>
+		<strong><%= link_to job.title, job %></strong>
+		<% unless job.org.blank? %>
+			- <em><%= job.org %></em>
+		<% end %>
 	</div>
 <% end %>
-<% if signed_in? %>
-	<div id='job'>
-		<div class='right'>
+<div id='job'>
+	<div class='right'>
+		<% if signed_in? %>
 			<%= link_to "Add a new job?", new_job_path %>
-		</div>
+		<% else %>
+			<%= link_to "Sign in to add new jobs...", signin_path %>
+		<% end %>
 	</div>
-<% end %>
+</div>

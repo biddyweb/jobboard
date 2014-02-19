@@ -1,45 +1,39 @@
 <%= form_for(@job) do |f| %>
 	<% if @job.errors.any? %>
-		<ul>
-			<% @job.errors.full_messages.each do |msg| %>
-				<li><%= msg %></li>
-			<% end %>
-		</ul>
+		<div id='alert'>
+			<div id='error'>
+				<ul>
+					<% @job.errors.full_messages.each do |msg| %>
+						<li><%= msg %></li>
+					<% end %>
+				</ul>
+			</div>
+		</div>
 	<% end %>
 
-	<div class="field">
-		<%= f.label :title %><br>
-		<%= f.text_field :title %>
-	</div>
-	<div class="field">
-		<%= f.label :org %><br>
-		<%= f.text_field :org %>
-	</div>
-	<div class="field">
-		<%= f.label :internship %><br>
-		<%= f.check_box :internship %>
-	</div>
-	<div class="field">
-		<%= f.label :postdate %><br>
-		<%= f.date_field :postdate %>
-	</div>
-	<div class="field">
-		<%= f.label :filldate %><br>
-		<%= f.date_field :filldate %>
-	</div>
-	<div class="field">
-		<%= f.label :location %><br>
-		<%= f.text_field :location %>
-	</div>
-	<div class="field">
-		<%= f.label :link %><br>
-		<%= f.text_field :link %>
-	</div>
-	<div class="field">
-		<%= f.label :description %> (HTML allowed)<br>
-		<%= f.text_area :description %>
-	</div>
-	<div class="actions">
-		<%= f.submit %>
-	</div>
+	<%= f.label :title %>
+	<%= f.text_field :title %>
+	
+	<%= f.label :org %>
+	<%= f.text_field :org %>
+	
+	<p>Internship? &nbsp; &nbsp; <%= f.check_box :internship %> Yes</p>
+	
+	<%= f.label :postdate %>
+	<%= f.date_field :postdate %>
+
+	<%= f.label :filldate %>
+	<%= f.date_field :filldate %>
+
+	<%= f.label :location %>
+	<%= f.text_field :location %>
+	
+	<%= f.label :link %>
+	<%= f.text_field :link %>
+
+	<%= f.label :description, "Description (HTML allowed)" %>
+	<%= f.text_area :description, class: "describe-job" %>
+
+	<br><br>
+	<%= f.submit "Submit", class: "btn btn-large btn-primary" %>
 <% end %>
