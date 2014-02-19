@@ -5,7 +5,7 @@ describe JobsController do
 	let!(:job) { FactoryGirl.create(:job, user: user) }
 	let!(:wrong_user) { FactoryGirl.create(:user, email: "wrong@example.com") }
 	let!(:wrong_job) { FactoryGirl.create(:job, user: wrong_user) }
-	
+
 	describe "sign in control" do
 		describe "non-signed users can't create jobs" do
 			before { post :create, job: FactoryGirl.create(:job) }
