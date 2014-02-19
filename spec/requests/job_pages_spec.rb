@@ -5,6 +5,6 @@ describe "JobPages" do
   
   describe "Index" do
     before { visit root_path }
-    it { should have_link('sign in', href: signin_path) }
+    it { should have_link('Sign in?', href: signin_path) }
   end
 end

@@ -23,7 +23,7 @@ describe "Authentication" do
       it { should_not have_link('sign in', href: signin_path) }
       describe "followed by signout" do
       	before { click_link "Sign out?" }
-      	it { should have_link('sign in', href: signin_path) }
+      	it { should have_link('Sign in?', href: signin_path) }
       end
     end
 
@@ -31,27 +31,25 @@ describe "Authentication" do
       describe "for non-signed in users" do
         describe "when attempting to visit a protected page" do
           let(:user) { FactoryGirl.create(:user) }
-          let(:job) { FactoryGirl.create(:job, user: user) }
-          before { get edit_job_path(job) }
-          it { should_not have_content('Editing job') }
+          before { get new_job_path }
+          it { should_not have_content('New job') }
         end
         describe "submitting the create action" do
-          before { post job_path }
+          before { post job_path() }
           specify { expect(response).to redirect_to(signin_path) }
         end
       end
       describe "after signing in" do
+        let(:user) { FactoryGirl.create(:user) }
         before do
           visit signin_path
           fill_in "Email", with: user.email
           fill_in "Password", with: user.password
           click_button "Sign in"
         end
-        describe "when attempting to visit a protected page" do
-          let(:user) { FactoryGirl.create(:user) }
-          let(:job) { FactoryGirl.create(:job, user: user) }
-          before { get edit_job_path(job) }
-          it { should have_content('Editing job') }
+        describe "when attempting to visit the new job page" do
+          before { get new_job_path }
+          specify { expect(page).to have_content('New job') }
         end
       end
 
