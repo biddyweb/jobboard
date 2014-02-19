@@ -34,10 +34,6 @@ describe "Authentication" do
           before { get new_job_path }
           it { should_not have_content('New job') }
         end
-        describe "submitting the create action" do
-          before { post jobs_path }
-          specify { expect(response).to redirect_to(signin_path) }
-        end
       end
       describe "after signing in" do
         let(:user) { FactoryGirl.create(:user) }
@@ -56,26 +52,11 @@ describe "Authentication" do
         before { sign_in user }
         describe "users can edit their own jobs" do
           before { visit edit_job_path(job) }
-          specify { save_and_open_page
-            expect(page).to have_content('Editing job') }
+          specify { expect(page).to have_content('Editing job') }
         end
         describe "users can only edit their own jobs" do
-          before { get edit_job_path(wrong_job) }
-          specify { expect(response).to redirect_to(signin_url) }
-        end
-        describe "users can only delete their own jobs" do
-          it "should not change job count" do
-            expect do
-              delete job_path(wrong_job)
-            end.to_not change(Job, :count)
-          end
-        end
-        describe "users can delete their own jobs" do
-          it "should decrease job count" do
-            expect do
-              delete job_path(job)
-            end.to change(Job, :count).by(-1)
-          end
+          before { visit edit_job_path(wrong_job) }
+          specify { expect(page).to_not have_content('Editing job') }
         end
       end
     end
