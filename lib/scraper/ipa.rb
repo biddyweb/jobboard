@@ -14,12 +14,22 @@ module Scraper
     def scrape agent
       jobs = []
       agent.get(SOURCE) do |page|
+        links = page / "div#content" / "a"
+        links = links.to_a
+        links = links.select do |link|
+          link.attributes["href"].to_s =~ /jobs\//
+          # Noticed that only legitimate job links have a URL 
+          # descriptor with a path after "jobs".
+        end
+        puts links.map(&:to_html)
 
-        raise page.inspect
-        
+        #  $link.methods - Class.new.methods
+
 =begin
+
         jobs_div = page / "div.col-md-9"
         buffer = []
+
         for child in jobs_div[1].children
           if child.name == "h2"
             jobs << create_job_from_xml!(buffer)
