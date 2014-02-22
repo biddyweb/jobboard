@@ -49,7 +49,7 @@ module Scraper
       Job.new \
         title: title,
         org: ORGANIZATION,
-        internship: False,
+        internship: false,
         postdate: nil,
         filldate: startDate,
         location: location,
