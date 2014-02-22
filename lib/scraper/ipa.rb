@@ -20,13 +20,14 @@ module Scraper
           link.attributes["href"].to_s =~ /jobs\// # Noticed that only legitimate job links have a URL descriptor with a path after "jobs".
         end
         links.each do
+          links.map! { |link| link.attributes["href"].to_s }
           scrape_job(agent, links)
         end
       end
     end
 
     def scrape_job agent, links
-      agent.get(|links|) do |page|
+      agent.get(links) do |page|
         job = page / "div#content"
         puts job
         puts "---"
