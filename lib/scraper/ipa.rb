@@ -24,7 +24,7 @@ module Scraper
           scrape_job(agent, link)
         end
       end
-      jobs
+      jobs.compact
     end
 
     def scrape_job agent, link    # Prep each individual job page
