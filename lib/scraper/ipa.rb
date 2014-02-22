@@ -27,12 +27,13 @@ module Scraper
     def scrape_job agent, link    # Prep each individual job page
       agent.get(link) do |page|                     # Scrape page using Mechanize
         content = page / "div#content"              # Get page content from the div content wrapper
-        create_job_fron_content! content, link      # Create a job out of it
+        create_job_from_content! content, link      # Create a job out of it
       end
     end
 
-    def create_job_fron_content! content, link  # Actually put the job in the database
+    def create_job_from_content! content, link  # Actually put the job in the database
       title = content / "h1.title"   # Grab title from content
+      title = title.text
 
       # Grab information from ul elements on page
       list_els = content / "li"
@@ -44,8 +45,7 @@ module Scraper
 
       
       # Put the job in the database, unless it already exists
-      unless Job.where('title like ?', "%#{content.text}")
-        .where(org: ORGANIZATION).exists?
+      unless Job.where(title: title).where(org: ORGANIZATION).exists?
       Job.new \
         title: title,
         org: ORGANIZATION,
