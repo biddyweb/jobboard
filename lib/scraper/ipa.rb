@@ -6,6 +6,7 @@ module Scraper
 
     ORGANIZATION = "Innovations for Poverty Action"
     SOURCE = "http://www.poverty-action.org/getinvolved/jobs"
+    LOCATION = "New Haven, CT"
 
     def initialize
     end
@@ -38,12 +39,10 @@ module Scraper
       # Grab information from ul elements on page
       list_els = content / "li"
       list_loc = list_els.select { |li| em = li / "strong"; em.try(:first).try(:text) =~ /Location/ }   # Grab location
-      location = list_loc.first.children[1].text.strip
+      location = list_loc.try(:first).try(:children).try(:[], 1).try(:text).try(:strip) || LOCATION
 
       list_start = list_els.select { |li| em = li / "strong"; em.try(:first).try(:text) =~ /Desired start date/ }   # Grab start date
       startDate = list_start.first.children[1].text.strip
-      raise "#{location} #{startDate}"
-
       
       # Put the job in the database, unless it already exists
       unless Job.where(title: title).where(org: ORGANIZATION).exists?
