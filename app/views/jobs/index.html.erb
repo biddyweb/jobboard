@@ -1,9 +1,15 @@
-<% @jobs.each do |job| %>
+<% if Job.exists? %>
+	<% @jobs.each do |job| %>
+		<div id='job'>
+			<strong><%= link_to job.title, job %></strong>
+			<% unless job.org.blank? %>
+				- <em><%= job.org %></em>
+			<% end %>
+		</div>
+	<% end %>
+<% else %>
 	<div id='job'>
-		<strong><%= link_to job.title, job %></strong>
-		<% unless job.org.blank? %>
-			- <em><%= job.org %></em>
-		<% end %>
+		<em>No jobs yet...</em>
 	</div>
 <% end %>
 <div id='job'>
