@@ -38,10 +38,10 @@ module Scraper
       # Grab information from ul elements on page
       list_els = content / "li"
       list_loc = list_els.select { |li| em = li / "strong"; em.try(:first).try(:text) =~ /Location/ }   # Grab location
-      location = list_loc[0].children[1].text
+      location = list_loc.to_a[0].children[1].text
 
       list_start = list_els.select { |li| em = li / "strong"; em.try(:first).try(:text) =~ /Desired start date/ }   # Grab start date
-      startDate = list_start[0].children[1].text
+      startDate = list_start.to_a[0].children[1].text
 
       
       # Put the job in the database, unless it already exists
