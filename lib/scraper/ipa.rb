@@ -57,7 +57,7 @@ module Scraper
           postdate: nil,
           filldate: startDate,
           location: location,
-          description: content,
+          description: content.to_html,
           link: link,
           user_id: 1
       end
