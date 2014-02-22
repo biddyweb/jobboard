@@ -38,11 +38,10 @@ module Scraper
       # Grab information from ul elements on page
       list_els = content / "li"
       list_loc = list_els.select { |li| em = li / "strong"; em.try(:first).try(:text) =~ /Location/ }   # Grab location
-      location = list_loc.to_a[0].children[1].text
+      location = list_loc.first.children[1].text.strip
 
       list_start = list_els.select { |li| em = li / "strong"; em.try(:first).try(:text) =~ /Desired start date/ }   # Grab start date
-      startDate = list_start.to_a[0].children[1].text
-
+      startDate = list_start.first.children[1].text.strip
       
       # Put the job in the database, unless it already exists
       unless Job.where(title: title).where(org: ORGANIZATION).exists?
