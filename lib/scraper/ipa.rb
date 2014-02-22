@@ -19,9 +19,9 @@ module Scraper
         links = links.select do |link|                        # The first link is a javascript action, which we want to get rid of...
           link.attributes["href"].to_s =~ /jobs\//            # ...noticed that only legitimate job links have a URL descriptor with a path after "jobs", so we use regex.
         end
-        links.map! { |link| link.attributes["href"].to_s }    # Get the URL paths from the links
         jobs = links.map do |link|                            # Scrape a job from each link
-          scrape_job(agent, link)
+          next if Job.where(title: link.text).where(org: ORGANIZATION).exists?
+          scrape_job(agent, link.attributes["href"].to_s)
         end
       end
       jobs.compact
@@ -48,19 +48,17 @@ module Scraper
       list_start = list_els.select { |li| em = li / "strong"; em.try(:first).try(:text) =~ /Desired start date/ }   # Grab start date
       startDate = list_start.try(:first).try(:children).try(:[], 1).try(:text).try(:strip)
       
-      # Put the job in the database, unless it already exists
-      unless Job.where(title: title).where(org: ORGANIZATION).exists?
-        Job.new \
-          title: title,
-          org: ORGANIZATION,
-          internship: false,
-          postdate: nil,
-          filldate: startDate,
-          location: location,
-          description: content.to_html,
-          link: link,
-          user_id: 1
-      end
+      # A check for existence is already present in the scrape method
+      Job.new \
+        title: title,
+        org: ORGANIZATION,
+        internship: false,
+        postdate: nil,
+        filldate: startDate,
+        location: location,
+        description: content.to_html,
+        link: link,
+        user_id: 1
     end
 
   end
