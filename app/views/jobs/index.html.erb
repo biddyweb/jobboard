@@ -1,12 +1,23 @@
 <% if Job.exists? %>
-	<% @jobs.each do |job| %>
-		<div id='job'>
-			<strong><%= link_to job.title, job %></strong>
-			<% unless job.org.blank? %>
-				- <em><%= job.org %></em>
-			<% end %>
-		</div>
-	<% end %>
+	<script type="text/javascript" charset="utf-8">
+		$(document).ready(function() {
+			$('#jobs').dataTable();
+		} );
+	</script>
+	<table cellpadding="0" cellspacing="0" border="0" class="display" id="jobs" width="100%">
+		<thead>
+			<tr>
+				<th>Title</th>
+				<th>Org</th>
+			</tr>
+		</thead>
+		<% @jobs.each do |job| %>
+			<tr class="odd gradeX">
+				<td><strong><%= link_to job.title, job %></strong></td>
+				<td><%= job.org %></td>
+			</tr>
+		<% end %>
+	</table>
 <% else %>
 	<div id='job'>
 		<em>No jobs yet...</em>

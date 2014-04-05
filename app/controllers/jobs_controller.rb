@@ -4,7 +4,7 @@ class JobsController < ApplicationController
 	before_action :set_job, only: [:show, :edit, :update, :destroy]
 
 	def index
-		@jobs = Job
+		@jobs = Job.all
 	end
 
 	def show
