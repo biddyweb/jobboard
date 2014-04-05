@@ -36,9 +36,14 @@ module Scraper
       job
     end
 
-    def create_job_from_content! content, link  # Actually put the job in the database
-      title = content / "h1.title"   # Grab title from content
-      title = title.text
+    def create_job_from_content! content, link      # Actually put the job in the database
+      title = content / "h1.title"                  # Grab title from content
+      title = title.text.gsub(/\((.+)\)/, '')       # Get title and regex out the location
+      
+      content_t = content.to_html                   # Change content from Nokogiri object to HTML
+      content_t.gsub!(/\<h1(.+)\<\/h1\>/m, '')      # Remove title from description
+      content_t.gsub!(/\<ul\ (.+)\<\/p\>/m, '')     # Remove "Print this page" and "Share" links from description (this isn't working and I don't know why)
+
 
       # Grab information from ul elements on page
       list_els = content / "li"
@@ -56,8 +61,8 @@ module Scraper
         postdate: nil,
         filldate: startDate,
         location: location,
-        description: content.to_html,
-        link: link,
+        description: content_t,
+        link: "http://www.poverty-action.org" + link,
         user_id: 1
     end
 
