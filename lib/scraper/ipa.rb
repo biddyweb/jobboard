@@ -27,27 +27,27 @@ module Scraper
       jobs.compact
     end
 
-    def scrape_job agent, link    # Prep each individual job page
+    def scrape_job agent, link                           # Prep each individual job page
       job = nil
-      agent.get(link) do |page|                      # Scrape page using Mechanize
-        content = page / "div#content"               # Get page content from the div content wrapper
-        job = create_job_from_content! content, link # Create a job out of it
+      agent.get(link) do |page|                          # Scrape page using Mechanize
+        content = page / "div#content"                   # Get page content from the div content wrapper
+        job = create_job_from_content! content, link     # Create a job out of it
       end
       job
     end
 
-    def create_job_from_content! content, link      # Actually put the job in the database
-      title = content / "h1.title"                  # Grab title from content
-      title = title.text.gsub(/\((.+)\)/, '')       # Get title and regex out the location
+    def create_job_from_content! content, link           # Actually put the job in the database
+      title = content / "h1.title"                       # Grab title from content
+      title = title.text.gsub(/\((.+)\)/, '')            # Get title and regex out the location
       
-      content_t = content.to_html                   # Change content from Nokogiri object to HTML
-      content_t.gsub!(/\<h1(.+)\<\/h1\>/m, '')      # Remove title from description
-      content_t.gsub!(/\<ul\ (.+)\<\/p\>/m, '')     # Remove "Print this page" and "Share" links from description (this isn't working and I don't know why)
+      content_t = content.to_html                        # Change content from Nokogiri object to HTML
+      content_t.gsub!(/\<h1(.+)\<\/h1\>/m, '')           # Remove title from description
+      content_t.gsub!(/\<\/div\>(.+)\<\/div\>/m, '')     # Remove "Print this page" and "Share" links from description (this isn't working and I don't know why)
 
 
       # Grab information from ul elements on page
       list_els = content / "li"
-      list_loc = list_els.select { |li| em = li / "strong"; em.try(:first).try(:text) =~ /Location/ }   # Grab location
+      list_loc = list_els.select { |li| em = li / "strong"; em.try(:first).try(:text) =~ /Location/ }               # Grab location
       location = list_loc.try(:first).try(:children).try(:[], 1).try(:text).try(:strip)
 
       list_start = list_els.select { |li| em = li / "strong"; em.try(:first).try(:text) =~ /Desired start date/ }   # Grab start date
