@@ -2,11 +2,11 @@ module Scraper
   # use mechanize to scrape from https://www.poverty-action.org/getinvolved/jobs
   # mechanize: http://mechanize.rubyforge.org/Mechanize.html
 	
-  class Gates < Processor
+  class PSI < Processor
 
-    ORGANIZATION = "The Bill and Melinda Gates Foundation"
-    SOURCE = "http://careers.gatesfoundation.org/search/?q=&location"
-    LOCATION = "Seattle, WA"
+    ORGANIZATION = "Population Services International"
+    SOURCE = "http://hire.jobvite.com/CompanyJobs/Careers.aspx?k=JobListing&c=qju9VfwB&jvresize=http%3a%2f%2fwww.psi.org%2fsites%2fdefault%2fthemes%2fpsi%2fFrameResize.html&v=1"
+    LOCATION = "Washington DC, USA"
 
     def initialize
     end
@@ -14,17 +14,23 @@ module Scraper
     def scrape agent    # Scrape page for job pages, and then create a job out of each link
       jobs = nil
       agent.get(SOURCE) do |page|                                 # Begin page scraping using Mechanize
-        links = page / "tbody" / "a"                              # Use XPATH to get all links within the tbody wrapper from the page
+        links = page / "div.jvlisting" / "a"                      # Use XPATH to get all links within the jvlisting div wrapper from the page
         links = links.to_a                                        # Turn list of links into an array
+        4.times { links.shift }                                   # Throw out first four links (not job related)
         jobs = links.map do |link|                                # Scrape a job from each link
-          title = link.text
-          link = link.attributes["href"].to_s                     # Get link from page and convert it to string
-          link = "http://careers.gatesfoundation.org" + link      # Gates Foundation uses relative links, so we need to get the full URL
-          next if Job.where(title: title).where(org: ORGANIZATION).exists?
-          scrape_job(agent, link)
+          next if Job.where(title: link.text).where(org: ORGANIZATION).exists?
+          middle_man(agent, link.attributes["href"].to_s)
         end
       end
       jobs.compact
+    end
+
+    def middle_man agent, link                                    # PSI uses an annoying frame, so we need to get the frame and then find the real job content there
+      agent.get(link) do |page|
+        content = page / "frame#jobviteframe"                     # Grab frame (not sure this works)
+        raise content.inspect
+      end
+      scrape_job(agent, link)
     end
 
     def scrape_job agent, link                                    # Prep each individual job page
