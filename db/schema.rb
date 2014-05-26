@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20140206164258) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "jobs", force: true do |t|
     t.string   "title"
     t.string   "org"
@@ -27,7 +30,7 @@ ActiveRecord::Schema.define(version: 20140206164258) do
     t.datetime "updated_at"
   end
 
-  add_index "jobs", ["user_id", "created_at"], name: "index_jobs_on_user_id_and_created_at"
+  add_index "jobs", ["user_id", "created_at"], name: "index_jobs_on_user_id_and_created_at", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "name"
@@ -38,6 +41,6 @@ ActiveRecord::Schema.define(version: 20140206164258) do
     t.string   "remember_token"
   end
 
-  add_index "users", ["remember_token"], name: "index_users_on_remember_token"
+  add_index "users", ["remember_token"], name: "index_users_on_remember_token", using: :btree
 
 end
