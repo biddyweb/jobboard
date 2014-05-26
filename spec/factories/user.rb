@@ -5,9 +5,4 @@
     password "sampleton"
     password_confirmation "sampleton"
   end
-
-  factory :job do
-    sequence(:title) { |n| "Example Title #{n}" }
-    user
-  end
 end
