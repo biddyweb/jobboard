@@ -27,6 +27,7 @@ module Scraper
 
     # PSI uses a really annoying frame, so we need to get the frame and then find the real job content there
     def middle_man agent, link
+      job = nil
       agent.get(link) do |page|
         url = page / "div#node-5647"                                            # Grab frame, which is wrapped in the node-5647 div tag
         url = url.children[3]['src']                                            # Grab URL out of frame
@@ -34,6 +35,7 @@ module Scraper
         url = url + '&j=' + flag                                                # Append the flag to the URL 
         job = scrape_job(agent, url, link)                                      # Get the job from the frame URL.  Also pass original link so we can keep it for records.
       end
+      job
     end
 
     def scrape_job agent, link, original                                        # Prep each individual job page
