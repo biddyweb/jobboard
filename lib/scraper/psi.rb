@@ -31,7 +31,7 @@ module Scraper
       agent.get(link) do |page|
         url = page / "div#node-5647"                                            # Grab frame, which is wrapped in the node-5647 div tag
         url = url.children[3]['src']                                            # Grab URL out of frame
-        flag = link.gsub!('http://www.psi.org/jobs/all-positions?jvi=', '')     # We need to get the job id out of the URL and pass it along in order to get the frame right.
+        flag = link.gsub('http://www.psi.org/jobs/all-positions?jvi=', '')      # We need to get the job id out of the URL and pass it along in order to get the frame right.
         url = url + '&j=' + flag                                                # Append the flag to the URL 
         job = scrape_job(agent, url, link)                                      # Get the job from the frame URL.  Also pass original link so we can keep it for records.
       end
@@ -53,7 +53,7 @@ module Scraper
 
       location = content / "div.jvjobheader" / "h3"                             # Grab location object from the h3 tag within the jvjobheader div tag
       location = location.text                                                  # Grab location text from the location object
-      location = location.gsub('Affiliate/Platform-Based | ', '')               # Remove extraneous text from location
+      location.gsub!(/^[^|]*|/, '').slice!(0)                                   # Remove extraneous text from location (everything up to the space after the pipe character)
       
       content_t = content / "div.jvdescriptionbody"                             # Split out all the unnecessary wrapping
       content_t = content_t.to_html                                             # Change content from Nokogiri object to HTML
