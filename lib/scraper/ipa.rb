@@ -56,13 +56,16 @@ module Scraper
       content_t.gsub!('<span style="' + span1style + '">', "<span>")
       content_t.gsub!('<span style="' + span2style + '">', "<span>")
 
+
       # Grab information from ul elements on page
       list_els = content / "li"
       list_loc = list_els.select { |li| em = li / "strong"; em.try(:first).try(:text) =~ /Location/ }               # Grab location
-      location = list_loc.try(:first).try(:children).try(:[], 1).try(:text).try(:strip)
+      location = list_loc.try(:first).try(:children).try(:[], 1).try(:text).try(:strip) # (One might think we could just get the location from the title capture group
+                                                                                        # included above, but not all locations appear in the title on the page.)
 
       list_start = list_els.select { |li| em = li / "strong"; em.try(:first).try(:text) =~ /Desired start date/ }   # Grab start date
       startDate = list_start.try(:first).try(:children).try(:[], 1).try(:text).try(:strip)
+
       
       # A check for existence is already present in the scrape method
       Job.new \

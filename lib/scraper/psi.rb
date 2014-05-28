@@ -1,4 +1,4 @@
-module Scraper 
+ module Scraper 
   # use mechanize to scrape from PSI
   # mechanize: http://mechanize.rubyforge.org/Mechanize.html
 	
@@ -53,7 +53,7 @@ module Scraper
 
       location = content / "div.jvjobheader" / "h3"                             # Grab location object from the h3 tag within the jvjobheader div tag
       location = location.text                                                  # Grab location text from the location object
-      location.gsub!(/^[^|]*|/, '').slice!(0)                                   # Remove extraneous text from location (everything up to the space after the pipe character)
+      location.gsub!(/^[^|]*|/, '')[2..-1]                                      # Remove extraneous text from location (everything up to the space after the pipe character)
       
       content_t = content / "div.jvdescriptionbody"                             # Split out all the unnecessary wrapping
       content_t = content_t.to_html                                             # Change content from Nokogiri object to HTML
