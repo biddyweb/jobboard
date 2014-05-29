@@ -19,6 +19,7 @@ class JobsController < ApplicationController
 
 	def create
 		@job = current_user.jobs.build(job_params)
+		job_params[:description] = markdown_to_html(job_params[:description])
 		respond_to do |format|
 			if @job.save
 				format.html do
@@ -34,6 +35,7 @@ class JobsController < ApplicationController
 	end
 
 	def update
+		job_params[:description] = markdown_to_html(job_params[:description])
 		respond_to do |format|
 			if @job.update(job_params)
 				format.html do
@@ -55,6 +57,19 @@ class JobsController < ApplicationController
 			format.html { redirect_to jobs_url }
 			format.json { head :no_content }
 		end
+	end
+
+	def markdown_to_html(input)
+		input.gsub!(/(#+)(.*)/, '<h2>\2</h2>')															# Headers
+		input.gsub!(/\[([^\[]+)\]\(([^\)]+)\)/, '<a href=\'\2\'>\1</a>')		# Links
+		input.gsub!(/(\*\*|__)(.*?)\1/, '<strong>\2</strong>')							# Bold
+		input.gsub!(/(\*|_)(.*?)\1/, '<em>\2</em>')													# Italics
+		input.gsub!(/`(.*?)`/, '<code>\1</code>')														# Inline Code
+		input.gsub!(/\n\*(.*)/, '<li>\1</li>')															# Lists
+		input.gsub!(/\n(&gt;|\>)(.*)/, '<blockquote>\1</blockquote>')				# Blockquotes
+		input.gsub!(/\n-{5,}/, '\n<hr />')																	# Horizontal rules
+		input.gsub!(/\n/, '<br>')																						# Paragraphs
+		input
 	end
 
 	private
