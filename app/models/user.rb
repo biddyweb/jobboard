@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
     Digest::SHA1.hexdigest(token.to_s)
   end
 
-  def User.send_password_reset
+  def send_password_reset
     begin
       self[:password_reset_token] = SecureRandom.urlsafe_base64
     end while User.exists?(:password_reset_token => self[:password_reset_token])
