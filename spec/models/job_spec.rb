@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Job do
 
   let(:user) { FactoryGirl.create(:user) }
-  before { @job = user.jobs.build(title: "Example", org: "Example", internship: false, postdate: "", filldate: "", location: "Example", description: "", link: "http://www.example.com") }
+  before { @job = user.jobs.build(title: "Example", org: "Example", internship: false, postdate: "", filldate: "", location: "Example", description: "Example", link: "http://www.example.com") }
   subject { @job }
   it { should respond_to(:title) }
   it { should respond_to(:org) }
@@ -22,16 +22,21 @@ describe Job do
     it { should_not be_valid }
   end
 
+  describe "when description is not present" do
+    before { @job.description = " " }
+    it { should_not be_valid }
+  end
+
   describe "when title is same but org is different" do
     before do
-      same_title_different_org_job = user.jobs.build(title: "Example", org: "Different Example", internship: false, postdate: "", filldate: "", location: "Example", description: "", link: "http://www.example.com")
+      same_title_different_org_job = user.jobs.build(title: "Example", org: "Different Example", internship: false, postdate: "", filldate: "", location: "Example", description: "Example", link: "http://www.example.com")
       same_title_different_org_job.save
     end
     it { should be_valid }
   end
   describe "when title is different but org is same" do
     before do
-      same_org_different_title_job = user.jobs.build(title: "Different Example", org: "Example", internship: false, postdate: "", filldate: "", location: "Example", description: "", link: "http://www.example.com")
+      same_org_different_title_job = user.jobs.build(title: "Different Example", org: "Example", internship: false, postdate: "", filldate: "", location: "Example", description: "Example", link: "http://www.example.com")
       same_org_different_title_job.save
     end
     it { should be_valid }

@@ -28,4 +28,24 @@ describe "User pages" do
       end
     end
   end
+
+  describe "sign in and sign out" do
+    describe "sign in" do
+      let(:user) { FactoryGirl.create(:user) }
+      before do
+        sign_in user
+      end
+      it { should have_link('Sign out?', href: signout_path) }
+      it { should_not have_link('Sign in?', href: signin_path) }
+    end
+    describe "sign out" do
+      let(:user) { FactoryGirl.create(:user) }
+      before do
+        sign_in user
+        click_link 'Sign out?'
+      end
+      it { should_not have_link('Sign out?', href: signout_path) }
+      it { should have_link('Sign in?', href: signin_path) }
+    end
+  end
 end
