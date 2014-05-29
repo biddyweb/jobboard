@@ -14,5 +14,8 @@ module Eajobsboard
     config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif)
     config.autoload_paths += %W(#{config.root}/lib)
 
+    config.action_mailer.delivery_method   = :postmark
+		config.action_mailer.postmark_settings = { :api_key => ENV['POSTMARK_API_KEY'] }
+
   end
 end

@@ -118,6 +118,12 @@ GEM
     ntlm-http (0.1.1)
     pg (0.15.1)
     polyglot (0.3.3)
+    postmark (1.2.1)
+      json
+      rake
+    postmark-rails (0.7.0)
+      actionmailer (>= 3.0.0)
+      postmark (~> 1.2.0)
     pry (0.9.12.4)
       coderay (~> 1.0)
       method_source (~> 0.8)
@@ -237,6 +243,7 @@ DEPENDENCIES
   launchy
   mechanize
   pg (= 0.15.1)
+  postmark-rails
   rails (= 4.0.2)
   rails_12factor (= 0.0.2)
   rails_layout
