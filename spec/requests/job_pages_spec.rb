@@ -4,8 +4,26 @@ describe "JobPages" do
   subject { page }
   
   describe "Index" do
-  	before { visit root_path }
-  	it { should have_link('Sign in to add new jobs...', signin_path) }
+    describe "While not logged in" do
+    	before { visit root_path }
+    	it { should have_link('Sign up to add new jobs...', signup_path) }
+      it { should have_link('Sign in?', signin_path) }
+      it { should have_link('Sign up!', signup_path) }
+      it { should_not have_link('Sign out?', signout_path) }
+      it { should_not have_link('Add a new job?', new_job_path) }
+    end
+    describe "After logged in" do
+      let(:user) { FactoryGirl.create(:user) }
+      before do
+        sign_in user
+        visit root_path
+      end
+      it { should_not have_link('Sign up to add new jobs...', signup_path) }
+      it { should_not have_link('Sign in?', signin_path) }
+      it { should_not have_link('Sign up!', signup_path) }
+      it { should have_link('Sign out?', signout_path) }
+      it { should have_link('Add a new job?', new_job_path) }
+    end
   end
 
   describe "Create" do

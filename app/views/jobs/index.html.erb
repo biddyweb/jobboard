@@ -10,6 +10,9 @@
 	</script>
 	<table cellpadding="0" cellspacing="0" border="0" class="display" id="jobs" width="100%">
 		<thead>
+			<% if !signed_in? %>
+				<tr><td colspan='2'><p align='right'><%= link_to "Sign up to add new jobs!", signup_path %></p></td></tr>
+			<% end %>
 			<tr>
 				<th>Title</th>
 				<th>Org</th>
@@ -32,7 +35,7 @@
 		<% if signed_in? %>
 			<%= link_to "Add a new job?", new_job_path %>
 		<% else %>
-			<%= link_to "Sign in to add new jobs...", signin_path %>
+			<%= link_to "Sign up to add new jobs...", signup_path %>
 		<% end %>
 	</div>
 </div>
