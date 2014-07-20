@@ -24,7 +24,7 @@ class JobsController < ApplicationController
 			if @job.save
 				format.html do
 					redirect_to @job
-					flash[:success] = 'Job created.'
+					flash[:success] = "Job created.  #{view_context.link_to('Create another?', new_job_path)}".html_safe
 				end
 				format.json { render action: 'show', status: :created, location: @job }
 			else
