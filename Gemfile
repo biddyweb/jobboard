@@ -34,6 +34,7 @@ gem 'postmark-rails'
 gem 'mechanize'
 gem 'whenever', :require => false
 gem 'require_all'
+gem 'newrelic_rpm'
 
 group :doc do
   gem 'sdoc', '0.3.20', require: false
