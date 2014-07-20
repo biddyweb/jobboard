@@ -1,10 +1,11 @@
 <% if Job.exists? %>
 	<script type="text/javascript" charset="utf-8">
 		$(document).ready(function() {
-			$('#jobs').dataTable( {
+			jDataTable = $('#jobs').dataTable( {
 		        "iDisplayLength": 50,
 		        "aLengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]]
 		    } );
+		    jDataTable.fnSort( [ [1,'asc'] ] );
 		} );
 	</script>
 	<table cellpadding="0" cellspacing="0" border="0" class="display" id="jobs" width="100%">
